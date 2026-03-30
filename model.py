@@ -2,7 +2,6 @@
 Python script to prepare FasterRCNN model.
 """
 
-import os
 import torch
 import torchvision
 
@@ -10,28 +9,13 @@ from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torchvision.models.detection import  FasterRCNN
 from torchvision.models.detection.rpn import AnchorGenerator
 
-def model(weights_path='fasterrcnn.pth'):
-    # load the model WITHOUT downloading any weights
+def model():
+    # load the COCO pre-trained model
     # we will keep the image size to 1024 pixels instead of the original 800,
     # this will ensure better training and testing results, although it may...
     # ... increase the training time (a tarde-off)
-    try:
-        # torchvision>=0.13
-        model = torchvision.models.detection.fasterrcnn_resnet50_fpn(
-            weights=None,
-            weights_backbone=None,
-            min_size=1024
-        )
-    except TypeError:
-        # torchvision<0.13
-        model = torchvision.models.detection.fasterrcnn_resnet50_fpn(
-            pretrained=False,
-            pretrained_backbone=False,
-            min_size=1024
-        )
-    if weights_path and os.path.exists(weights_path):
-        state_dict = torch.load(weights_path, map_location='cpu')
-        model.load_state_dict(state_dict)
+    model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True, 
+                                                                 min_size=1024)
     # one class is pneumonia, and the other is background
     num_classes = 2
     # get the input features for the classifier
