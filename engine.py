@@ -193,8 +193,8 @@ def collate_fn(batch):
     return tuple(zip(*batch))
 
 def prepare_data():
-    DIR_INPUT = '../input'
-    DIR_TRAIN = f"{DIR_INPUT}/images/"
+    DIR_INPUT = '/opt/ml/input/data'
+    DIR_TRAIN = f"{DIR_INPUT}/"
 
     train_df = pd.read_csv(f"{DIR_INPUT}/train_labels.csv")
     print(train_df.shape)
